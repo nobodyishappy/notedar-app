@@ -1,0 +1,26 @@
+.square {
+    display: flex;
+    font-size: 50px;
+    font-weight: 700;
+    width: 70px;
+    height: 70px;
+    border: 2px solid black;
+    background: white;
+    color: black;
+    align-items: center;
+    justify-content: center;
+}
+
+.board-row {
+    display: flex;
+}
+
+.game {
+    display: flex;
+    gap: 50px;
+    padding: 50px;
+}
+
+.game-info {
+    padding-top: 20px;
+}
