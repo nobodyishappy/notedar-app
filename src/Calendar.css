@@ -1,2 +1,47 @@
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+}
 
+.label-container,.calendar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+  gap: 5px;
+}
 
+.month-label,.month-arrow-button {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.month-label {
+  width: 20%;
+}
+
+.month-label-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.day-label {
+  text-align: center;
+  font-size: 1rem;
+}
+
+.day-card{
+  aspect-ratio: 1/1;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.day-card:hover{
+  background: gray;
+}
+
+.day-card:focus{
+  background: green;
+}
