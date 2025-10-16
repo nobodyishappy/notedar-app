@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Calendar.css'
-
+import axios from 'axios';
 
 function DayCard({value, start, selectDate} : {value:number, start:number, selectDate:Function}) {
   if (start != -1) {
@@ -33,9 +33,27 @@ function CalendarGrid({numberOfDays, startOfWeek, selectDate} : {numberOfDays:nu
   )
 }
 
+function formatDateToDDMMYYYY(date: Date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const year = date.getFullYear();
+
+  return `${day}${month}${year}`;
+}
+
 export default function CalendarContainer({day, month, year} : {day:number, month:number, year:number}) {
-  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-  const monthNames = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const [monthNames, setMonthNames] = useState([]);
+
+  const fetchAPI = async () => {
+    const response = await axios.get("http://localhost:8080/api");
+    setDaysOfWeek(response.data.daysOfWeek);
+    setMonthNames(response.data.monthNames);
+  };
+  
+  useEffect(() => {
+    fetchAPI();
+  }, []);
 
   const [dateDay, setDateDay] = useState(day);
   const [dateMonth, setDateMonth] = useState(month);
@@ -56,8 +74,19 @@ export default function CalendarContainer({day, month, year} : {day:number, mont
     setDaysOfMonth(new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate());
   }
 
-  const selectDate = (day:number) => {
-    console.log(new Date(dateYear, dateMonth, day));
+  const selectDate = async (day:number) => {
+    const date = formatDateToDDMMYYYY(new Date(dateYear, dateMonth, day));
+    const response = await axios.post('http://localhost:8080/tasks/newtask', {
+      date: date,
+      time: "1200",
+      title: "Test",
+      content: "Test"
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => console.log(res.data));
   }
 
   const monthLabel = (
